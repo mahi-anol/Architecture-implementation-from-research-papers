@@ -50,6 +50,12 @@ baseline_model_config={
     },
 }
 
-best_grid_searched_coefficient=collections.namedtuple(typename="Best_Coefficients",field_names=['alpha','beta','gemma'])(alpha=1.2,beta=1.1,gemma=1.15) # Directly Taken from the paper.
+tpu_friendly_efficient_resolutions=[224,240,260,300,380,456,528,600] # used for initial input.
+
+best_grid_searched_coefficient=collections.namedtuple(typename="Best_Coefficients",
+                                                      field_names=['alpha','beta','gemma'])(beta=[1.0,1.0,1.1,1.2,1.4,1.6,1.8,2.0,2.2,4.3]
+                                                                                            ,alpha=[1.0,1.1,1.2,1.4,1.8,2.2,2.6,3.1,3.6,5.3]
+                                                                                            ,gemma='Not needed'
+                                                                                            ) # Directly Taken from the original repo, as the mentioned value from the paper doesnt match.
 
 

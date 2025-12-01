@@ -1,15 +1,7 @@
 import torch.nn as nn
 from dataclasses import dataclass
 from torch.nn import functional as F
-
-class EfficientNet(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv3x3=nn.Conv2d(in_channels=3,out_channels=32,kernel_size=(3,3),stride=(2,2),padding=(1,1),bias=False) # (224,224,3) -> (112,112,32)
-        self.batchNorm1=nn.BatchNorm2d(num_features=32)
-        
-
-        
+import torch
 class MBConvBlock(nn.Module):
     def __init__(self,expansion_ratio=4,reduce_ratio=4):
         super().__init__()
@@ -69,3 +61,33 @@ class MBConvBlock(nn.Module):
 
 
 
+
+
+
+
+class EfficientNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        # Stem Layer
+        self.conv3x3=nn.Conv2d(in_channels=3,out_channels=output_channel[0],kernel_size=(3,3),stride=(2,2),padding='same',bias=False) # (224,224,3) -> (112,112,32)
+        self.batchNorm=nn.BatchNorm2d(num_features=output_channel[0])
+
+    def forward(self,inputs):
+        x=self.conv3x3(inputs)
+        x=self.batchNorm(x)
+        x=F.silu(x,inplace=False)
+        return x
+    
+
+if __name__=="__main__":
+    from utils import model_configs
+    size,output_channel,repeat=model_configs().get_varient_configs('efficient_b0')
+    print(size)
+    print(output_channel)
+    print(repeat)
+
+    model=EfficientNet()
+    
+    inputs=torch.rand((1,3,224,224))
+    print(model(inputs))
