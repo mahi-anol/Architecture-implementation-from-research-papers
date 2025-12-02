@@ -128,9 +128,9 @@ class model_helpers:
             
     @staticmethod
     def same_padded_maxpool2D(image_size=None):
-        if image_size is None:
-            return dynamically_same_padded_maxpool2D
-        else:
+
+            return model_helpers.dynamically_same_padded_maxpool2D if image_size is None else model_helpers.statically_same_padded_maxpool2D
+ 
             return statically_same_padded_maxpool2D
         
     
@@ -144,7 +144,50 @@ class model_helpers:
             ih,iw=inputs.size()[-2:]
             kh,kw=self.kernel_size
             sh,sw=self.stride
-            oh,ow=
+            oh,ow=model_helpers.get_output_image_size((ih,iw),(sh,sw))
+            pad_h=max((oh-1)*sh+(kh-1)*self.dilation[0]+1-ih,0)
+            pad_w=max((ow-1)*sw+(kw-1)*self.dilation[1]+1-iw,0)
+            
+            if pad_h>0 or pad_w>0:
+                inputs=F.pad(inputs,[pad_w//2,pad_w-pad_w//2,pad_h//2,pad_h-pad_h//2])
+
+            return F.max_pool2d(inputs
+                                ,self.kernel_size
+                                ,self.stride
+                                ,self.padding
+                                ,self.dilation
+                                ,self.ceil_mode
+                                ,self.return_indices
+                                )
+
+    class statically_same_padded_maxpool2D(nn.MaxPool2d):
+        def __init__(self,kernel_size,stride,image_size=None,**kwargs):
+            super().__init__(kernel_size,stride,**kwargs)
+        
+            assert image_size is not None
+            ih,iw=(image_size,image_size) if isinstance(image_size,int) else image_size
+            kh,kw=self.kernel_size
+            sh,sw=self.stride
+            oh,ow=model_helpers.get_output_image_size((ih,iw),(sh,sw))
+            pad_h=max((oh-1)*sh+(kh-1)*self.dilation[0]+1-ih,0)
+            pad_w=max((ow-1)*sw+(kw-1)*self.dilation[1]+1-iw,0)
+
+            if  pad_h>0 or pad_w>0:
+                self.static_padding=nn.ZeroPad2d((pad_w//2,pad_w-pad_w//2
+                                                  ,pad_h//2,pad_h-pad_h//2))
+            else:
+                self.state_padding=nn.Identity()
+
+        def forward(self,inputs):
+            inputs=self.state_padding(inputs)
+            return F.max_pool2d(inputs
+                                ,self.kernel_size
+                                ,self.stride
+                                ,self.padding
+                                ,self.dilation
+                                ,self.ceil_mode
+                                ,self.return_indices
+                                )
         
 
 
