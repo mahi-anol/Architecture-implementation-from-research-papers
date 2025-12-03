@@ -50,6 +50,8 @@ baseline_model_config={
     },
 }
 
+
+kernel_configs=[3,3,3,5,3,5,5,3]
 tpu_friendly_efficient_resolutions=[224,240,260,300,380,456,528,600] # used for initial input.
 
 best_grid_searched_coefficient=collections.namedtuple(typename="Best_Coefficients",
