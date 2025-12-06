@@ -31,24 +31,24 @@ class model_configs:
 
         config_index=valid_varient_types.index(varient_type)
 
-        resolution=tpu_friendly_efficient_resolutions[config_index]
+        input_resolution=tpu_friendly_efficient_resolutions[config_index]
         alpha=best_grid_searched_coefficient.alpha[config_index]
         beta=best_grid_searched_coefficient.beta[config_index]
 
         channel_configs=[self.fixing_width(beta,v2) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='c'] # width==beta
         depth_configs=[self.fixing_depth(alpha,v2) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='l'] # depth =alpha
-        resolution_configs=[v2 for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='r']
+        layer_wise_resolution_configs=[v2 for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='r']
 
         stride_configs=[]
-        for i in range(1,len(resolution_configs)):
-            stride_configs.append(resolution_configs[i-1][0]//resolution_configs[i][0])
+        for i in range(1,len(layer_wise_resolution_configs)):
+            stride_configs.append(layer_wise_resolution_configs[i-1][0]//layer_wise_resolution_configs[i][0])
 
         if __name__=="__main__":
-            print(resolution)
+            print(input_resolution)
             print(channel_configs)
             print(depth_configs)
             print(stride_configs)
-        return resolution,channel_configs,depth_configs,stride_configs
+        return input_resolution,channel_configs,depth_configs,stride_configs
 
 
 

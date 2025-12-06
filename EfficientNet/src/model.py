@@ -101,6 +101,8 @@ class EfficientNet(nn.Module):
 
         # stage 2
         repeat_configs=stage_repeats[1:-1]
+        self.MBConv1=MBConvBlock(expansion_ratio=1,re_ratio=0.25,in_channels=channel_configs[0],out_channels=channel_configs[1],input_image_size=model_helpers.get_output_image_size())
+
         
 
 
