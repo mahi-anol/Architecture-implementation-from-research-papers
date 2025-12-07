@@ -6,8 +6,8 @@ from torch.nn import functional as F
 import torch
 
 class model_configs:
-    @staticmethod
-    def fixing_width(beta,value,divisor=8):
+    @classmethod
+    def fixing_width(cls,beta,value,divisor=8):
         scaled=beta*value
         fixed_width=max(divisor,(scaled+divisor/2)//divisor * divisor)
 
@@ -15,14 +15,14 @@ class model_configs:
             fixed_width+=divisor
         return int(fixed_width)
 
-    @staticmethod
-    def fixing_depth(alpha,value):
+    @classmethod
+    def fixing_depth(cls,alpha,value):
         scaled=alpha*value
         fixed_depth=math.ceil(scaled)
         return int(fixed_depth)
 
-
-    def get_varient_configs(self,varient_type:str):
+    @classmethod
+    def get_varient_configs(cls,varient_type:str='efficient_b0'):
 
         valid_varient_types=['efficient_b0','efficient_b1','efficient_b2','efficient_b3','efficient_b4','efficient_b5','efficient_b6','efficient_b7']
 
@@ -35,8 +35,8 @@ class model_configs:
         alpha=best_grid_searched_coefficient.alpha[config_index]
         beta=best_grid_searched_coefficient.beta[config_index]
 
-        channel_configs=[self.fixing_width(beta,v2) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='c'] # width==beta
-        depth_configs=[self.fixing_depth(alpha,v2) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='l'] # depth =alpha
+        channel_configs=[cls.fixing_width(beta,v2) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='c'] # width==beta
+        depth_configs=[cls.fixing_depth(alpha,v2) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='l'] # depth =alpha
         layer_wise_resolution_configs=[v2 for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='r']
 
         stride_configs=[]
@@ -109,7 +109,7 @@ class model_helpers:
 
             assert image_size is not None
 
-            ih,iw=image_size if len(image_size)>1 else (image_size,image_size) # b,c,h,w -> h,w
+            ih,iw=model_helpers.get_output_image_size(image_size) # b,c,h,w -> h,w
             kh,kw=self.weight.size()[-2:] #filter,channel,h,w
             sh,sw=self.stride
             oh,ow=model_helpers.get_output_image_size((ih,iw),(sh,sw))
