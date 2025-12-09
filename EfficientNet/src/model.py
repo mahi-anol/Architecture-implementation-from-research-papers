@@ -121,15 +121,13 @@ class final_bootleneck_layer(nn.Module):
                                                                             )
         self.bn=nn.BatchNorm2d(num_features=out_channels)
         
-        self.pooling=nn.AdaptiveAvgPool1d(1)
-
         self.flattend=nn.Linear(in_features=out_channels,out_features=final_classes,bias=True)
 
     def forward(self,x):
         x=self.conv1x1(x)
         x=self.bn(x)
         x=F.silu(x,inplace=False)
-        x=self.pooling(x)
+        x=F.adaptive_avg_pool2d(x,1)
         x=torch.flatten(x,1)
         x=self.flattend(x)
         return x
@@ -139,7 +137,7 @@ class EfficientNet(nn.Module):
         super().__init__()
 
         self.stem_layer=stem_layer()
-        output_image_shape= model_helpers.get_output_image_size(input_resolution,stride_configs[0])
+        output_image_shape= model_helpers.get_output_image_size(input_resolution,stride_configs[0]) # calculates the output shape after stem layer.
 
         self.mb_conv_layers=nn.Sequential() # will contain MBconv layers of stage 2-8
         # stage 2-8 repeat configs
@@ -148,7 +146,7 @@ class EfficientNet(nn.Module):
         print(repeat_configs)
         for stage,repeat in enumerate(repeat_configs,1):
             for i in range(repeat):
-                self.mb_conv_layers.add_module('MB_CONV',MBConvBlock(expansion_ratio= 1 if stage==1 else 6
+                self.mb_conv_layers.add_module(f'MB_CONV-{stage}',MBConvBlock(expansion_ratio= 1 if stage==1 else 6
                                                         ,re_ratio=0.25
                                                         ,in_channels=output_channel_configs[stage-1]
                                                         ,out_channels=output_channel_configs[stage]
@@ -185,6 +183,7 @@ if __name__=="__main__":
 
     inputs=torch.rand((1,3,224,224))
     print('Test input shape: ',inputs.shape)
+    ### unit testing
 
     # Testing mbconv
     print('Test input shape: ',inputs.shape)
@@ -200,19 +199,23 @@ if __name__=="__main__":
     # testing final bottleneck layer
     inputs=torch.rand((1,320,7,7))
     print('Test input shape: ',inputs.shape)
-    output=final_bootleneck_layer(image_size=(7,7),in_channels=inputs[1],out_channels=1280)(inputs)
+    output=final_bootleneck_layer(image_size=(7,7),in_channels=inputs.shape[1],out_channels=1280,kernel_size=(1,1),stride=(1,1),final_classes=10)(inputs)
+    print('final bottle neck output shape: ',output.shape)
     
 
+    # integration testing
 
+    input_resolution,output_channel_configs,stage_repeats,stride_configs=model_configs.get_varient_configs('efficient_b0')
+    print('input_resolution: ',input_resolution)
+    print('output_channel_configs: ',output_channel_configs)
+    print('stage_repeats: ',stage_repeats)
+    print('stride_configs: ',stride_configs)
+    model=EfficientNet(input_resolution,output_channel_configs,stage_repeats,stride_configs)
 
-    # input_resolution,output_channel_configs,stage_repeats,stride_configs=model_configs.get_varient_configs('efficient_b0')
-    # print('input_resolution: ',input_resolution)
-    # print('output_channel_configs: ',output_channel_configs)
-    # print('stage_repeats: ',stage_repeats)
-    # print('stride_configs: ',stride_configs)
-    # model=EfficientNet(input_resolution,output_channel_configs,stage_repeats,stride_configs)
-
-    # print(model)
+    print(model)
     
-    # inputs=torch.rand((1,3,224,224))
-    # print(model(inputs))
+
+    inputs=torch.rand((2,3,224,224))
+    print('Test input shape: ',inputs.shape)
+    output=model(inputs)
+    print('Model output shape: ',output.shape)
