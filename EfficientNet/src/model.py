@@ -14,6 +14,7 @@ class MBConvBlock(nn.Module):
         self.expansion_ratio=expansion_ratio
         self.in_channels=in_channels
         self.out_channels=out_channels
+        self.stride=stride
         # Expansion Layer
         if expansion_ratio!=1:
             self.expansion_layer=model_helpers.same_padded_conv2D(image_size=input_image_size)(in_channels=in_channels
@@ -82,7 +83,7 @@ class MBConvBlock(nn.Module):
         x=self.bn2(x)
         
         # skip connection
-        if self.in_channels==self.out_channels and self.block_stride==1:
+        if self.in_channels==self.out_channels and self.stride==1:
             if drop_connect_rate:
                 x=model_helpers.drop_connect(inputs=x,p=drop_connect_rate,training=self.training)
             x+=inputs
@@ -147,10 +148,10 @@ class EfficientNet(nn.Module):
         print(repeat_configs)
         for stage,repeat in enumerate(repeat_configs,1):
             for i in range(repeat):
-                self.mb_conv_layers.add_module(f'MB_CONV-{stage}',MBConvBlock(expansion_ratio= 1 if stage==1 else 6
+                self.mb_conv_layers.add_module(f'MB_CONV-{stage}-{i}',MBConvBlock(expansion_ratio= 1 if stage==1 else 6
                                                         ,re_ratio=0.25
                                                         ,in_channels=output_channel_configs[stage-1]
-                                                        ,out_channels=output_channel_configs[stage]
+                                                         ,out_channels=output_channel_configs[stage]
                                                         ,input_image_size=output_image_shape
                                                         ,stride=stride_configs[stage]
                                                         ,kernel_size=kernel_configs[stage]
