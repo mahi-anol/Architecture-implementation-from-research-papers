@@ -234,36 +234,40 @@ if __name__=="__main__":
 
     # Input
     inputs=torch.randn((1,3,224,224))
-    print(inputs.shape)
+    print('Input: ',inputs.shape)
+
+    # Testing get_model_output_size
+    output=model_helpers.get_output_image_size(input_image_size=(224,224),stride=(2,2))
+    print('get_output_size with stride 2: ',output)
 
     # Test dynamic layer
     dynamic_conv2d=model_helpers.dynamically_same_padded_conv2D(in_channels=3,out_channels=12,kernel_size=(3,3),stride=2,dilation=1,groups=1,bias=False)
     output=dynamic_conv2d(inputs)
-    print(output.shape)
+    print('dynamic conv2d: ',output.shape)
 
     # Test static layer
     static_conv2d=model_helpers.statically_same_padded_conv2D(in_channels=3,out_channels=12,kernel_size=(3,3),stride=(2,2),image_size=(224,224))
     output=static_conv2d(inputs)
-    print(output.shape)
+    print('static conv2d:',output.shape)
 
     # Testing same padded layer
     same_padded_conv2d=model_helpers.same_padded_conv2D((224,224))
     conv2d=same_padded_conv2d(in_channels=3,out_channels=12,kernel_size=(3,3),stride=(2,2),dilation=1,groups=1,bias=False)
-    print(output.shape)
+    print('testing same padded: ',output.shape)
     
     same_padded_conv2d=model_helpers.same_padded_conv2D()
     conv2d=same_padded_conv2d(in_channels=3,out_channels=12,kernel_size=(3,3),stride=(2,2),dilation=1,groups=1,bias=False)
-    print(output.shape)
+    print('testing same padded: ',output.shape)
 
     # Testing Maxpool 2D.
     same_padded_max_pool=model_helpers.same_padded_maxpool2D(image_size=(224,224))
     max_pool_2D=same_padded_max_pool(kernel_size=(3,3),stride=(2,2))
     output=max_pool_2D(inputs)
-    print(output.shape)
+    print('Max pool static: ',output.shape)
 
     # Testing Maxpool 2D.
     same_padded_max_pool=model_helpers.same_padded_maxpool2D()
     max_pool_2D=same_padded_max_pool(kernel_size=(3,3),stride=(2,2))
     output=max_pool_2D(inputs)
-    print(output.shape)
+    print('max pool dynamic: ',output.shape)
 
