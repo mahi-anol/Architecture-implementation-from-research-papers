@@ -1,3 +1,4 @@
+
 import torch.nn as nn
 from dataclasses import dataclass
 from torch.nn import functional as F
@@ -5,7 +6,7 @@ import torch
 from config import baseline_model_config,kernel_configs
 from utils import model_helpers,model_configs
 from typing import OrderedDict
-
+from torchinfo import summary
 
 class MBConvBlock(nn.Module):
     def __init__(self,expansion_ratio=1,re_ratio=0.25,in_channels=1,out_channels=1,input_image_size=None,stride=None,kernel_size=None):
@@ -219,3 +220,6 @@ if __name__=="__main__":
     print('Test input shape: ',inputs.shape)
     output=model(inputs)
     print('Model output shape: ',output.shape)
+
+    ### show compelte model insights
+    summary(model,input_size=(1,3,224,224))
