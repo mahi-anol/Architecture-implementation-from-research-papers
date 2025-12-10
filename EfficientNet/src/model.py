@@ -150,10 +150,10 @@ class EfficientNet(nn.Module):
             for i in range(repeat):
                 self.mb_conv_layers.add_module(f'MB_CONV-{stage}-{i}',MBConvBlock(expansion_ratio= 1 if stage==1 else 6
                                                         ,re_ratio=0.25
-                                                        ,in_channels=output_channel_configs[stage-1]
+                                                        ,in_channels=output_channel_configs[stage-1] if i==0 else output_channel_configs[stage]
                                                          ,out_channels=output_channel_configs[stage]
                                                         ,input_image_size=output_image_shape
-                                                        ,stride=stride_configs[stage]
+                                                        ,stride=stride_configs[stage] if i==0 else 1 
                                                         ,kernel_size=kernel_configs[stage]
                                                         )
                                             )
@@ -179,7 +179,11 @@ class EfficientNet(nn.Module):
         # Final Layer forward pass
         x=self.final_BottleNeck(x)
         return x
-    
+
+def get_model(varient='efficient_b0'):
+    input_resolution,output_channel_configs,stage_repeats,stride_configs=model_configs.get_varient_configs(varient)
+    model=EfficientNet(input_resolution,output_channel_configs,stage_repeats,stride_configs)
+    return model
 
 if __name__=="__main__":
 

@@ -4,15 +4,21 @@ from functools import partial
 from torch import nn
 from torch.nn import functional as F
 import torch
+import os
+from logger import logging
+from exception import MyException
+import sys
 
 class model_configs:
     @classmethod
-    def fixing_width(cls,beta,value,divisor=32):
+    def fixing_width(cls,beta,value,divisor=8):
         scaled=beta*value
-        fixed_width=max(divisor,int((scaled+divisor/2)//divisor * divisor))
-
+        
+        min_depth=value or divisor
+        fixed_width=max(min_depth,int((scaled+divisor/2)//divisor * divisor))
         if fixed_width<0.9*scaled:
             fixed_width+=divisor
+        # print(fixed_width)
         return int(fixed_width)
 
     @classmethod
@@ -35,7 +41,7 @@ class model_configs:
         alpha=best_grid_searched_coefficient.alpha[config_index]
         beta=best_grid_searched_coefficient.beta[config_index]
 
-        channel_configs=[cls.fixing_width(beta=beta,value=v2,divisor=32) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='c'] # width==beta
+        channel_configs=[cls.fixing_width(beta=beta,value=v2,divisor=8) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='c'] # width==beta
         depth_configs=[cls.fixing_depth(alpha=alpha,value=v2) for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='l'] # depth =alpha
         layer_wise_resolution_configs=[v2 for k,v in baseline_model_config.items() for k2,v2 in v.items() if k2=='r']
 
@@ -217,8 +223,24 @@ class model_helpers:
         output=inputs/keep_prob*binary_tensor
 
         return output
+    
 
 
+def saving_model_with_state_and_logs(model,optimizer,results,file="model.pt"):
+    try:
+        os.makedirs('checkpoints',exist_ok=True)
+        path=os.path.join('checkpoints',file)
+        contents={
+            'model':model.state_dict(),
+            'optimizer':optimizer.state_dict(),
+            'history':results,
+        }
+        torch.save(contents,path)
+    except Exception as e:
+        logging.error("There was an unexpect error during saving the model artifacts")
+        raise MyException(e,sys)
+    else:
+        logging.info(f"Succesfully saved the model artifact at {path}")
 
 
 
@@ -270,4 +292,3 @@ if __name__=="__main__":
     max_pool_2D=same_padded_max_pool(kernel_size=(3,3),stride=(2,2))
     output=max_pool_2D(inputs)
     print('max pool dynamic: ',output.shape)
-
