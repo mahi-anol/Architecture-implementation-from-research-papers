@@ -157,7 +157,7 @@ class EfficientNet(nn.Module):
                                                         ,kernel_size=kernel_configs[stage]
                                                         )
                                             )
-            output_image_shape=model_helpers.get_output_image_size(output_image_shape,stride_configs[stage])
+                output_image_shape=model_helpers.get_output_image_size(output_image_shape,stride_configs[stage] if i==0 else 1)
 
 
         self.final_BottleNeck=final_bootleneck_layer(image_size=output_image_shape
@@ -228,3 +228,6 @@ if __name__=="__main__":
 
     ### show compelte model insights
     summary(model,input_size=(1,3,224,224))
+    print(f"Stem Params: {sum(p.numel() for p in model.stem_layer.parameters())}")
+    print(f"MBConv Params: {sum(p.numel() for p in model.mb_conv_layers.parameters())}")
+    print(f"Final Layer Params: {sum(p.numel() for p in model.final_BottleNeck.parameters())}")
