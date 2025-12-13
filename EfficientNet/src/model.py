@@ -42,7 +42,7 @@ class MBConvBlock(nn.Module):
 
 
         # # Sqeeze and Excitation Layer (attention)
-        reduced_channels=int(max(1,(expansion_ratio*in_channels)*re_ratio))
+        reduced_channels=int(max(1,(in_channels*re_ratio)))
         # print(reduced_channels)
         self.reduce=model_helpers.same_padded_conv2D(image_size=output_image_size)(in_channels=(expansion_ratio*in_channels),out_channels=reduced_channels,kernel_size=(1,1),stride=(1,1),dilation=(1,1),groups=1,bias=True)
         self.expand=model_helpers.same_padded_conv2D(image_size=output_image_size)(in_channels=reduced_channels,out_channels=(expansion_ratio*in_channels),kernel_size=(1,1),stride=(1,1),dilation=(1,1),groups=1,bias=True) # (1,1)
@@ -135,10 +135,10 @@ class final_bootleneck_layer(nn.Module):
         return x
 
 class EfficientNet(nn.Module):
-    def __init__(self,input_resolution,output_channel_configs,stage_repeats,stride_configs):
+    def __init__(self,input_resolution,output_channel_configs,stage_repeats,stride_configs,final_classes=10):
         super().__init__()
 
-        self.stem_layer=stem_layer()
+        self.stem_layer=stem_layer(out_channels=output_channel_configs[0])
         output_image_shape= model_helpers.get_output_image_size(input_resolution,stride_configs[0]) # calculates the output shape after stem layer.
 
         self.mb_conv_layers=nn.Sequential() # will contain MBconv layers of stage 2-8
@@ -157,6 +157,8 @@ class EfficientNet(nn.Module):
                                                         ,kernel_size=kernel_configs[stage]
                                                         )
                                             )
+                
+                # print('stage: ',stage,'repeat iter: ',i,'stride config: ',stride_configs[stage] if i==0 else 1)
                 output_image_shape=model_helpers.get_output_image_size(output_image_shape,stride_configs[stage] if i==0 else 1)
 
 
@@ -165,7 +167,7 @@ class EfficientNet(nn.Module):
                                                      ,out_channels=output_channel_configs[-1]
                                                      ,kernel_size=1
                                                      ,stride=stride_configs[-1]
-                                                     ,final_classes=10
+                                                     ,final_classes=final_classes
                                                     )        
 
     def forward(self,inputs):
@@ -180,9 +182,9 @@ class EfficientNet(nn.Module):
         x=self.final_BottleNeck(x)
         return x
 
-def get_model(varient='efficient_b0'):
+def get_model(varient='efficient_b0',final_classes=10):
     input_resolution,output_channel_configs,stage_repeats,stride_configs=model_configs.get_varient_configs(varient)
-    model=EfficientNet(input_resolution,output_channel_configs,stage_repeats,stride_configs)
+    model=EfficientNet(input_resolution,output_channel_configs,stage_repeats,stride_configs,final_classes=final_classes)
     return model
 
 if __name__=="__main__":
@@ -216,9 +218,9 @@ if __name__=="__main__":
     print('output_channel_configs: ',output_channel_configs)
     print('stage_repeats: ',stage_repeats)
     print('stride_configs: ',stride_configs)
-    model=EfficientNet(input_resolution,output_channel_configs,stage_repeats,stride_configs)
+    model=EfficientNet(input_resolution,output_channel_configs,stage_repeats,stride_configs,final_classes=10)
 
-    print(model)
+    # print(model)
     
 
     inputs=torch.rand((2,3,224,224))

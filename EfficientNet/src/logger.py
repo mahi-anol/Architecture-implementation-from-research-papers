@@ -11,7 +11,7 @@ MAX_LOG_SIZE = 5 * 1024 * 1024  # 5 MB
 BACKUP_COUNT = 3  # Number of backup log files to keep
 
 # Construct log file path
-root_dir = os.path.dirname(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+root_dir = os.path.dirname(os.path.abspath(os.path.join(os.path.dirname(__file__), './')))
 log_dir_path = os.path.join(root_dir, LOG_DIR)
 os.makedirs(log_dir_path, exist_ok=True)
 log_file_path = os.path.join(log_dir_path, LOG_FILE)
