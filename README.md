@@ -65,8 +65,8 @@ Each architecture has its own isolated folder for clarity and independent experi
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/paper-architectures-from-scratch.git
-   cd paper-architectures-from-scratch
+   git clone https://github.com/mahi-anol/Architecture-implementation-from-research-papers.git
+   cd *target-architecture-folder*
   
 2. Install dependencies (recommended: create a virtual environment)
     ```bash
