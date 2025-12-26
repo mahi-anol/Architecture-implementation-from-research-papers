@@ -53,23 +53,7 @@ Each architecture has its own isolated folder for clarity and independent experi
 - **EfficientNet**: Compound scaling of depth, width, and resolution for efficient CNNs.
 - **ResNet**: Deep residual learning with skip connections to enable very deep networks.
 - **UNet**: Encoder-decoder architecture with skip connections for precise segmentation.
-- **UNet++**: Nested dense skip pathways for improved segmentation accuracy.
-
----
-
-## 📚 References & Citations
-
-This project is inspired by the following foundational papers:
-
-- **EfficientNet**: "EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks"  
-  Mingxing Tan, Quoc V. Le | ICML 2019
-
-- **ResNet**: "Deep Residual Learning for Image Recognition"  
-  Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun | CVPR 2016
-
-- **UNet**: "U-Net: Convolutional Networks for Biomedical Image Segmentation"  
-  Olaf Ronneberger, Philipp Fischer, Thomas Brox | MICCAI 2015
-
+- (**more coming soon**)
 ---
 
 ## 🛠️ Future Plans
