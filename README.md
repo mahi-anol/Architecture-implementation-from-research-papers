@@ -28,7 +28,6 @@ Each architecture has its own isolated folder for clarity and independent experi
 ├── efficientnet/
 ├── resnet/
 ├── unet/
-├── unet_plus_plus/
 └── ... (more coming soon)
 ```
 
