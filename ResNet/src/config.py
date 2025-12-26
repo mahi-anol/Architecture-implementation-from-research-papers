@@ -27,3 +27,4 @@ resnet152_config=ResNetConfig(block='BottleNeck',
                             n_blocks=[3,8,36,3],
                             channels=[64,128,256,512],
                             ) 
+
