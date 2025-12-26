@@ -37,12 +37,12 @@ Each architecture has its own isolated folder for clarity and independent experi
 
 | File                  | Description                                                                 |
 |-----------------------|-----------------------------------------------------------------------------|
-| `model.py`            | Core neural network architecture implemented from scratch                    |
-| `training_pipeline.py`| Training loop, validation, loss computation, and checkpointing             |
+| `model.py`            | Core neural network architecture implemented from scratch                   |
+| `training_pipeline.py`| Training loop, validation, loss computation, and checkpointing              |
 | `data_pipeline.py`    | Dataset loading, preprocessing, augmentations, and DataLoaders              |
 | `config.py`           | Hyperparameters and experiment configuration                                |
-| `main.py`             | Entry point for training and inference                                      |
-| `utils.py`            | Helper functions (metrics, visualization, etc.)                             |
+| `main.py`             | Entry point ( empty for now)                                                |
+| `utils.py`            | Helper functions (custom layers, check pointing methods, etc.)                             |
 | `logger.py`           | Logging and experiment tracking utilities                                   |
 | `exception.py`        | Custom exceptions for better error handling                                 |
 
