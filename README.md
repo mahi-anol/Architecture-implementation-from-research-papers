@@ -94,7 +94,7 @@ This project is inspired by the following foundational papers:
     Run an example (e.g., ResNet on CIFAR-10 or ImageNet-style dataset)
     ```bash
     python src/training_pipeline.py
-
+    ```
 <citations>
     <paper>
         <title>EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks</title>
@@ -110,4 +110,3 @@ This project is inspired by the following foundational papers:
         <year>2016</year>
     </paper>
 </citations>
-```
