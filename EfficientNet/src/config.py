@@ -2,6 +2,7 @@ import collections
 
 ### This config is mentioned in the paper and was achieved through NAS.
 
+
 baseline_model_config={
     'stage1': {
         'r':(224,224), # Resolution (Hi,wi)
