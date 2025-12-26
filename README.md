@@ -102,7 +102,7 @@ This project is inspired by the following foundational papers:
         <conference>ICML</conference>
         <year>2019</year>
     </paper>
-    `
+    ```
     <paper>
         <title>Deep Residual Learning for Image Recognition</title>
         <authors>Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun</authors>
@@ -110,3 +110,4 @@ This project is inspired by the following foundational papers:
         <year>2016</year>
     </paper>
 </citations>
+```
