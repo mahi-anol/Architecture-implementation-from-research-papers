@@ -75,12 +75,7 @@ This project is inspired by the following foundational papers:
 
 ## 🛠️ Future Plans
 
-- [ ] Benchmarking and performance comparison scripts
-- [ ] Mixed-precision training (FP16 / BF16)
-- [ ] Integration with experiment tracking tools (e.g., Weights & Biases)
-- [ ] Transformer-based models (ViT, Swin Transformer, etc.)
-- [ ] Pre-trained weights release
-- [ ] Additional architectures (DenseNet, MobileNet, etc.)
+- [ ] Adding more architectures.
 
 ---
 
@@ -107,7 +102,7 @@ This project is inspired by the following foundational papers:
         <conference>ICML</conference>
         <year>2019</year>
     </paper>
-
+    `
     <paper>
         <title>Deep Residual Learning for Image Recognition</title>
         <authors>Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun</authors>
