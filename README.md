@@ -1,8 +1,10 @@
 # Deep Learning Architectures: From-Scratch Implementations from Research Papers
 
-This repository provides **from-scratch implementations** of influential deep learning architectures, built while studying seminal research papers in computer vision and deep learning. The emphasis is on **learning by implementation**, ensuring a deep understanding of the core concepts without relying on high-level libraries or pre-built wrappers.
+In my free time, I enjoy implementing well-known deep learning architectures entirely from scratch as a way to challenge and deepen my understanding of how they really work. This project is driven purely by curiosity and a passion for learning, rather than benchmarks or production goals.
 
-All models are implemented in pure PyTorch, staying faithful to the original papers while prioritizing clean, modular, and extensible code.
+Rebuilding these architectures layer by layer, wiring the training pipelines, and finally seeing the loss decrease is deeply rewarding. That moment when everything clicks, when the model trains correctly, gradients flow as expected, and theory turns into working code, is what motivates this repository.
+
+Each implementation reflects my learning journey while studying the original research papers, aiming to translate ideas from theory into clean, readable, and modular code.
 
 ---
 
@@ -68,9 +70,6 @@ This project is inspired by the following foundational papers:
 - **UNet**: "U-Net: Convolutional Networks for Biomedical Image Segmentation"  
   Olaf Ronneberger, Philipp Fischer, Thomas Brox | MICCAI 2015
 
-- **UNet++**: "UNet++: A Nested U-Net Architecture for Medical Image Segmentation"  
-  Zongwei Zhou, Md Mahfuzur Rahman Siddiquee, Nima Tajbakhsh, Jianming Liang | DLMIA 2018 (held with MICCAI)
-
 ---
 
 ## 🛠️ Future Plans
@@ -95,18 +94,18 @@ This project is inspired by the following foundational papers:
     ```bash
     python src/training_pipeline.py
     ```
-<citations>
-    <paper>
-        <title>EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks</title>
-        <authors>Mingxing Tan, Quoc Le</authors>
-        <conference>ICML</conference>
-        <year>2019</year>
-    </paper>
-    ```
-    <paper>
-        <title>Deep Residual Learning for Image Recognition</title>
-        <authors>Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun</authors>
-        <conference>CVPR</conference>
-        <year>2016</year>
-    </paper>
-</citations>
+
+## 📚 References / Citations
+
+- **EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks**  
+  Mingxing Tan, Quoc Le, ICML 2019  
+  [Paper Link](https://arxiv.org/abs/1905.11946)
+
+- **Deep Residual Learning for Image Recognition**  
+  Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun, CVPR 2016  
+  [Paper Link](https://arxiv.org/abs/1512.03385)
+
+- **U-Net: Convolutional Networks for Biomedical Image Segmentation**  
+  Olaf Ronneberger, Philipp Fischer, Thomas Brox, MICCAI 2015  
+  [Paper Link](https://arxiv.org/abs/1505.04597)
+
