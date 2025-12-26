@@ -1,6 +1,6 @@
 # Deep Learning Architectures: From-Scratch Implementations from Research Papers
 
-In my free time, I enjoy implementing well-known deep learning architectures entirely from scratch as a way to challenge and deepen my understanding of how they really work. This project is driven purely by curiosity and a passion for learning, rather than benchmarks or production goals.
+In my free time, I enjoy implementing well-known deep learning architectures entirely from scratch (by following research papers) as a way to challenge and deepen my understanding of how they really work. This project is driven purely by curiosity and a passion for learning, rather than benchmarks or production goals.
 
 Rebuilding these architectures layer by layer, wiring the training pipelines, and finally seeing the loss decrease is deeply rewarding. That moment when everything clicks, when the model trains correctly, gradients flow as expected, and theory turns into working code, is what motivates this repository.
 
