@@ -8,7 +8,7 @@ Each implementation reflects my learning journey while studying the original res
 
 ---
 
-## 🚀 Design Philosophy
+## Design Philosophy
 
 The project adheres to the following principles:
 
@@ -47,7 +47,7 @@ Each architecture has its own isolated folder for clarity and independent experi
 
 ---
 
-## 🏗️ Implemented Architectures
+##  Implemented Architectures
 
 - **EfficientNet**: Compound scaling of depth, width, and resolution for efficient CNNs.
 - **ResNet**: Deep residual learning with skip connections to enable very deep networks.
@@ -55,7 +55,7 @@ Each architecture has its own isolated folder for clarity and independent experi
 - (**more coming soon**)
 ---
 
-## 🛠️ Future Plans
+## Future Plans
 
 - [ ] Adding more architectures.
 
