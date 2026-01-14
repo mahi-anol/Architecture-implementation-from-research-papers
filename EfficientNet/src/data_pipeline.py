@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from torchvision import transforms
 @dataclass
 class DataConfig:
-    data_dir=r"E:\Architecture-implementation-from-research-papers\Data\image-classification"
+    data_dir=r"./Data/image-classification"
 
 train_dataset=CIFAR10(root=DataConfig.data_dir,download=True,train=True,transform=transforms.ToTensor())
 test_dataset=CIFAR10(root=DataConfig.data_dir,download=True,train=False,transform=transforms.ToTensor())
