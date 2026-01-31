@@ -56,7 +56,6 @@ def get_train_test_loader():
 
     with open('./artifacts/data_pipeline/classes.pkl',mode='wb') as file:
         pickle.dump(all_classes,file,protocol=pickle.HIGHEST_PROTOCOL)
-        
     return train_data_loader,test_data_loader,all_classes
 
 if __name__=="__main__":
