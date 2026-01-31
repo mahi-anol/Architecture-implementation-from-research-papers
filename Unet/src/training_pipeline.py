@@ -34,8 +34,7 @@ def train_step(model,data_loader,loss_fn,optimizer,device):
     train_loss,train_accuracy=0.0,0.0
     bar=tqdm(data_loader,desc='Training Epoch going on',leave=False)
     for batch,(x,Y) in enumerate(bar):
-        x,Y=x.to(device),
-         #y=b,1,h,w
+        x,Y=x.to(device),Y.to(device).long()#y=b,1,h,w
         # print("type of Y is ",type(x))
         logits=model(x) #b,c,h,w
         batch_loss=loss_fn(logits,Y)
