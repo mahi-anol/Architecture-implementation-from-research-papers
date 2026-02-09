@@ -28,6 +28,7 @@ Each architecture has its own isolated folder for clarity and independent experi
 ├── efficientnet/
 ├── resnet/
 ├── unet/
+|__UNET++/
 └── ... (more coming soon)
 ```
 
@@ -91,4 +92,8 @@ Each architecture has its own isolated folder for clarity and independent experi
 - **U-Net: Convolutional Networks for Biomedical Image Segmentation**  
   Olaf Ronneberger, Philipp Fischer, Thomas Brox, MICCAI 2015  
   [Paper Link](https://arxiv.org/abs/1505.04597)
+  
+- **U-Net++: A Nested U-Net Architecture for Medical Image Segmentation**  
+  Zongwei Zhou, Md Mahfuzur Rahman Siddiquee, Nima Tajbakhsh, Jianming Liang, Deep Learning in Medical Image Analysis (DLMIA) Workshop, MICCAI 2018  
+  [Paper Link](https://arxiv.org/abs/1807.10165)
 
