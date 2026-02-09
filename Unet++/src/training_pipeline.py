@@ -1,5 +1,5 @@
 from data_pipeline import get_train_test_loader
-from model import UNET
+from model import UNET_PLUS_PLUS
 from torch.optim import Adam
 from utils import handwritten_cross_entropy
 import torch
@@ -16,12 +16,13 @@ torch.manual_seed(SEED)
 torch.cuda.manual_seed(SEED)
 torch.backends.cudnn.deterministic = True
 device='cuda' if torch.cuda.is_available() else 'cpu'
+DEEP_SUPERVISION=True
 
 train_loader,test_loader,all_classes=get_train_test_loader()
 
 n_class=len(all_classes)
 
-model=UNET(in_channel=3,out_Channels=n_class)
+model=UNET_PLUS_PLUS(image_channel=3,n_class=n_class,deep_supervision=DEEP_SUPERVISION)
 model.to(device)
 optimizer=Adam(model.parameters(),lr=1e-3,weight_decay=1e-4)
 
@@ -37,13 +38,22 @@ def train_step(model,data_loader,loss_fn,optimizer,device):
         x,Y=x.to(device),Y.to(device).long()#y=b,1,h,w
         # print("type of Y is ",type(x))
         logits=model(x) #b,c,h,w
-        batch_loss=loss_fn(logits,Y)
+        batch_loss=0.0
+        if DEEP_SUPERVISION:
+            for output in logits:
+                batch_loss+=loss_fn(output,Y)
+            batch_loss/=len(logits)
+        else:
+            batch_loss=loss_fn(logits,Y)
+
         train_loss+=batch_loss.item()
         optimizer.zero_grad()
         batch_loss.backward()
         optimizer.step()
-        y_pred=torch.argmax(torch.softmax(logits,dim=1),dim=1,keepdim=True)#b,1,h,w
 
+        if isinstance(logits,list):
+            logits=logits[-1]
+        y_pred=torch.argmax(torch.softmax(logits,dim=1),dim=1,keepdim=True)#b,1,h,w
         batch_accuracy=(y_pred==Y).sum().item()/Y.numel()
         train_accuracy+=batch_accuracy
         bar.set_postfix(batch_loss=f'{batch_loss}',batch_accuracy=f'{batch_accuracy*100}%')
@@ -59,8 +69,18 @@ def test_step(model,data_loader,loss_fn,device):
         for batch,(x,Y) in enumerate(bar):
             x,Y=x.to(device),Y.to(device).long() #y=b,1,h,w
             logits=model(x)
-            batch_loss=loss_fn(logits,Y)
+            batch_loss=0.0
+            if DEEP_SUPERVISION:
+                for output in logits:
+                    batch_loss+=loss_fn(output,Y)
+                batch_loss/=len(logits)
+            else:
+                batch_loss=loss_fn(logits,Y)
+
             test_loss+=batch_loss.item()
+
+            if isinstance(logits,list):
+                logits=logits[-1]
             y_pred=torch.argmax(torch.softmax(logits,dim=1),dim=1,keepdim=True) #b,1,h,w
             batch_accuracy=(y_pred==Y).sum().item()/Y.numel()
             test_accuracy+=batch_accuracy

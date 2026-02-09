@@ -16,13 +16,13 @@ class DataConfig:
 
     input_transform=transforms.Compose(
         [
-            transform.Resize((572,572),interpolation=transform.InterpolationMode.BILINEAR),
+            transform.Resize((224,224),interpolation=transform.InterpolationMode.BILINEAR),
             transform.ToTensor()
         ]
     )
     gt_transform=transforms.Compose(
         [
-            transform.Resize((388,388),interpolation=transform.InterpolationMode.NEAREST),
+            transform.Resize((224,224),interpolation=transform.InterpolationMode.NEAREST),
             transform.ToTensor()
         ]
     )
