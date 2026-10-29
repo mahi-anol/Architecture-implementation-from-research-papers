@@ -20,7 +20,7 @@ The project adheres to the following principles:
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 Each architecture has its own isolated folder for clarity and independent experimentation.
 
@@ -62,7 +62,7 @@ Each architecture has its own isolated folder for clarity and independent experi
 
 ---
 
-## 🏁 Getting Started
+## Getting Started
 
 1. **Clone the repository**
    ```bash
@@ -79,7 +79,7 @@ Each architecture has its own isolated folder for clarity and independent experi
     python src/training_pipeline.py
     ```
 
-## 📚 References / Citations
+## References / Citations
 
 - **EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks**  
   Mingxing Tan, Quoc Le, ICML 2019  
